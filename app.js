@@ -40,26 +40,35 @@ app.get('/all/:id',(req,res)=>{
 })
 
 
-app.get('/all/search',(req,res)=>{
+app.get('/search',(req,res)=>{
 
     const queryName = req.query
     
-console.log(queryName)
+
   
+for(let key in req.query){
+        const resposta =  allPokemon.filter((poke)=>{
 
-        const resposta =  allPokemon.find((poke)=>{
 
-              return poke.name===queryName
+            if(key==='name'){
+                return poke.name===req.query.name
+            }else{
+
+                return poke.type.includes(req.query.type)
+            }
+             
          
         })
-
         if(resposta){
             return res.json(resposta)
         }else{
             return res.json({ msg: "Contact not found." });
         }
+
+    }
+       
     
-        res.json(queryName);
+  
     
    
 })
