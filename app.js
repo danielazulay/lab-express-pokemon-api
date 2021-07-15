@@ -51,11 +51,11 @@ for(let key in req.query){
 
 
             if(key==='name'){
-                return poke.name===req.query.name
-            }else{
-
-                return poke.type.includes(req.query.type)
+                return poke.name.includes(req.query.name)
             }
+
+                return poke.types.includes(req.query.types)
+            
              
          
         })
@@ -66,9 +66,53 @@ for(let key in req.query){
         }
 
     }
+
+
        
     
   
     
    
+})
+
+
+app.post('/new',(req,res)=>{
+
+let poke = req.body
+
+let lastid= allPokemon[allPokemon.length-1].id
+
+
+let newpoke={...poke,id:lastid+1}
+allPokemon.push(newpoke)
+return res.json(newpoke)
+})
+
+
+
+app.put('/editar/:id',(req,res)=>{
+    
+let formData = req.body
+
+let id= req.params.id
+const foundPokemon = allPokemon.find((currentPokemon) => {
+    return currentPokemon.id === Number(id);
+  });
+
+  if (foundPokemon) {
+    // Atualiza o elemento da array com os dados do corpo (body) da requisição
+    const index = allPokemon.findIndex((currentPokemon) => {
+      return currentPokemon.id === Number(id);
+    });
+
+    if (index > -1) {
+      allPokemon[index] = { ...foundPokemon, ...formData };
+
+      return res.json(allPokemon[index]);
+    } else {
+      return res.json({ msg: "Pokemon not found." });
+    }
+
+}
+
 })
